@@ -1,3 +1,4 @@
+---
 # Částečný český překlad sensorů
 # Tento soubor ukazuje, že můžete přeložit jen některé sensory.
 # Nepřeložené sensory se načtou z fallback souboru (sensors.yaml)
