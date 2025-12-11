@@ -96,7 +96,7 @@ def load_yaml(base_filename: str, language: Optional[str] = None) -> dict[str, A
 
     # Always load base file as fallback
     base_file_path = locales_dir / base_filename
-    base_data = {}
+    base_data: dict[str, Any] = {}
 
     try:
         with open(base_file_path, "r", encoding="utf-8") as f:
