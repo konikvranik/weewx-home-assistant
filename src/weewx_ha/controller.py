@@ -17,7 +17,7 @@ from weewx import NEW_ARCHIVE_RECORD, NEW_LOOP_PACKET  # type: ignore
 from weewx.engine import StdEngine, StdService  # type: ignore
 
 from . import ConfigPublisher, PacketPreprocessor, StatePublisher
-from .locale_loader import set_language
+from .locale_loader import set_language, set_config_overrides
 from .models import ExtensionConfig, MQTTConfig
 
 logger = logging.getLogger(__name__)
@@ -59,6 +59,16 @@ class Controller(StdService):
 
         # Set language for localized YAML loading
         set_language(self.config.lang)
+
+        # Set config overrides if provided
+        overrides = {}
+        if self.config.sensors:
+            overrides["sensors"] = self.config.sensors
+        if self.config.units:
+            overrides["units"] = self.config.units
+        if self.config.enums:
+            overrides["enums"] = self.config.enums
+        set_config_overrides(overrides if overrides else None)
 
         self.availability_topic: str = f"{self.config.state_topic_prefix}/status"
         self.mqtt_client: mqtt.Client = self.init_mqtt_client(self.config.mqtt)

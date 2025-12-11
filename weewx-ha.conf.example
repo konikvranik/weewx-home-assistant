@@ -31,3 +31,24 @@
     # Supported values: cs, en (or omit for English default)
     # Falls back to English if translation not found
     lang = cs
+
+    # Optional: Override or extend locale data (sensors, units, enums)
+    # Overrides have highest priority: base YAML < localized YAML < config overrides
+    # [[sensors]]
+    #     # Override specific sensor configuration
+    #     [[[outTemp]]]
+    #         [[[[metadata]]]]
+    #             name = "Custom Outdoor Temperature"
+    #             device_class = "temperature"
+    #
+    # [[units]]
+    #     # Override specific unit metadata
+    #     [[[degree_C]]]
+    #         value_template = "{{ value | round(0) }}"
+    #
+    # [[enums]]
+    #     # Override enum mappings
+    #     [[[forecast_rule]]]
+    #         0 = "Custom: Mostly Clear"
+    #         1 = "Custom: Partly Cloudy"
+

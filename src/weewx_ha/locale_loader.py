@@ -14,6 +14,9 @@ logger = logging.getLogger(__name__)
 # Global language setting (can be set from configuration)
 _current_language: str | None = None
 
+# Global config overrides (can be set from configuration)
+_config_overrides: dict[str, Any] | None = None
+
 
 def _deep_merge(base: dict, overlay: dict) -> dict:
     """Deep merge two dictionaries, with overlay taking precedence.
@@ -70,11 +73,42 @@ def get_language() -> str | None:
     return _current_language
 
 
+def set_config_overrides(overrides: dict[str, Any] | None) -> None:
+    """Set configuration overrides for locale data.
+
+    Parameters
+    ----------
+    overrides : dict[str, Any] | None
+        Dictionary with keys 'sensors', 'units', 'enums' containing override data
+
+    """
+    global _config_overrides
+    _config_overrides = overrides
+    logger.info(f"Config overrides set: {list(overrides.keys()) if overrides else 'None'}")
+
+
+def get_config_overrides() -> dict[str, Any] | None:
+    """Get the current config overrides.
+
+    Returns
+    -------
+    dict[str, Any] | None
+        Current config overrides or None
+
+    """
+    return _config_overrides
+
+
 def load_yaml(base_filename: str, language: str | None = None) -> dict[str, Any]:
     """Load YAML configuration file from locales directory with language fallback.
 
     Supports partial localization: loads base file first, then merges localized
-    file on top. Missing keys in localized file will use fallback values.
+    file on top, and finally applies config overrides with highest priority.
+
+    Priority order (lowest to highest):
+    1. Base YAML file (e.g., sensors.yaml)
+    2. Localized YAML file (e.g., sensors_cs.yaml)
+    3. Config overrides from weewx configuration
 
     Parameters
     ----------
@@ -109,38 +143,48 @@ def load_yaml(base_filename: str, language: str | None = None) -> dict[str, Any]
         logger.error(f"Error parsing base YAML file {base_file_path}: {e}")
         return {}
 
-    # If no language specified, return base data
-    if not lang:
-        return base_data
+    # Start with base data
+    result = base_data
 
-    # Try to load localized file
-    name_parts = base_filename.rsplit(".", maxsplit=1)
-    if len(name_parts) == 2:
-        name, ext = name_parts
-        localized_filename = f"{name}_{lang}.{ext}"
-        localized_file_path = locales_dir / localized_filename
+    # If language specified, try to load and merge localized file
+    if lang:
+        name_parts = base_filename.rsplit(".", maxsplit=1)
+        if len(name_parts) == 2:
+            name, ext = name_parts
+            localized_filename = f"{name}_{lang}.{ext}"
+            localized_file_path = locales_dir / localized_filename
 
-        try:
-            with open(localized_file_path, encoding="utf-8") as f:
-                localized_data = yaml.safe_load(f) or {}
-                logger.info(
-                    f"Loaded localized configuration from {localized_file_path}, "
-                    f"merging with base"
+            try:
+                with open(localized_file_path, encoding="utf-8") as f:
+                    localized_data = yaml.safe_load(f) or {}
+                    logger.info(
+                        f"Loaded localized configuration from {localized_file_path}, "
+                        f"merging with base"
+                    )
+                    # Deep merge: base data with localized overlay
+                    result = _deep_merge(result, localized_data)
+            except FileNotFoundError:
+                logger.debug(
+                    f"Localized file not found: {localized_file_path}, using base only"
                 )
-                # Deep merge: base data with localized overlay
-                return _deep_merge(base_data, localized_data)
-        except FileNotFoundError:
-            logger.debug(
-                f"Localized file not found: {localized_file_path}, using base only"
-            )
-        except yaml.YAMLError as e:
-            logger.error(
-                f"Error parsing localized YAML file {localized_file_path}: {e}, "
-                f"using base only"
-            )
+            except yaml.YAMLError as e:
+                logger.error(
+                    f"Error parsing localized YAML file {localized_file_path}: {e}, "
+                    f"using base only"
+                )
 
-    # Return base data if localized file not found or error occurred
-    return base_data
+    # Apply config overrides if present (highest priority)
+    if _config_overrides:
+        # Extract override key from filename (e.g., "sensors.yaml" -> "sensors")
+        override_key = base_filename.rsplit(".", maxsplit=1)[0]
+        if override_key in _config_overrides and _config_overrides[override_key]:
+            logger.info(
+                f"Applying config overrides for {override_key} "
+                f"({len(_config_overrides[override_key])} entries)"
+            )
+            result = _deep_merge(result, _config_overrides[override_key])
+
+    return result
 
 
 def load_enums(language: str | None = None) -> dict[str, dict[int, str]]:

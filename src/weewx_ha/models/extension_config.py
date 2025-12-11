@@ -21,6 +21,10 @@ class ExtensionConfig(BaseModel):
     discovery_topic_prefix: str = Field(
         default="homeassistant", description="Prefix for the MQTT discovery topic"
     )
+    enums: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Override enum mappings from enums.yaml",
+    )
     lang: Optional[str] = Field(
         default=None,
         description="Language code for localized sensor names (e.g., 'cs', 'en'). Falls back to English if not set.",
@@ -32,12 +36,20 @@ class ExtensionConfig(BaseModel):
         min_length=1,
         pattern=r"^[a-zA-Z0-9_-]+$",
     )
+    sensors: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Override sensor configurations from sensors.yaml",
+    )
     state_topic_prefix: str = Field(
         default="weather", description="Prefix for the state topic"
     )
     station: StationInfo = Field(..., description="Weather station device information")
     unit_system: UnitSystem = Field(
         default=UnitSystem.METRICWX, description="Unit system for measurements"
+    )
+    units: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Override unit metadata from units.yaml",
     )
 
     @classmethod
