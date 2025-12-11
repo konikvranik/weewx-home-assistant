@@ -4,7 +4,7 @@
 from copy import deepcopy
 import logging
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 # Third-Party Libraries
 import yaml  # type: ignore[import-untyped]
@@ -12,7 +12,7 @@ import yaml  # type: ignore[import-untyped]
 logger = logging.getLogger(__name__)
 
 # Global language setting (can be set from configuration)
-_current_language: Optional[str] = None
+_current_language: str | None = None
 
 
 def _deep_merge(base: dict, overlay: dict) -> dict:
@@ -44,12 +44,12 @@ def _deep_merge(base: dict, overlay: dict) -> dict:
     return result
 
 
-def set_language(language: Optional[str]) -> None:
+def set_language(language: str | None) -> None:
     """Set the current language for loading localized YAML files.
 
     Parameters
     ----------
-    language : Optional[str]
+    language : str | None
         Language code (e.g., 'cs', 'en', 'de') or None for default
 
     """
@@ -58,19 +58,19 @@ def set_language(language: Optional[str]) -> None:
     logger.info(f"Language set to: {language or 'default (fallback)'}")
 
 
-def get_language() -> Optional[str]:
+def get_language() -> str | None:
     """Get the current language setting.
 
     Returns
     -------
-    Optional[str]
+    str | None
         Current language code or None
 
     """
     return _current_language
 
 
-def load_yaml(base_filename: str, language: Optional[str] = None) -> dict[str, Any]:
+def load_yaml(base_filename: str, language: str | None = None) -> dict[str, Any]:
     """Load YAML configuration file from locales directory with language fallback.
 
     Supports partial localization: loads base file first, then merges localized
@@ -80,7 +80,7 @@ def load_yaml(base_filename: str, language: Optional[str] = None) -> dict[str, A
     ----------
     base_filename : str
         Base name of the YAML file (e.g., 'enums.yaml')
-    language : Optional[str]
+    language : str | None
         Language code to try first, or None to use global setting
 
     Returns
@@ -114,7 +114,7 @@ def load_yaml(base_filename: str, language: Optional[str] = None) -> dict[str, A
         return base_data
 
     # Try to load localized file
-    name_parts = base_filename.rsplit(".", 1)
+    name_parts = base_filename.rsplit(".", maxsplit=1)
     if len(name_parts) == 2:
         name, ext = name_parts
         localized_filename = f"{name}_{lang}.{ext}"
@@ -143,12 +143,12 @@ def load_yaml(base_filename: str, language: Optional[str] = None) -> dict[str, A
     return base_data
 
 
-def load_enums(language: Optional[str] = None) -> dict[str, dict[int, str]]:
+def load_enums(language: str | None = None) -> dict[str, dict[int, str]]:
     """Load enum mappings from YAML file with language support.
 
     Parameters
     ----------
-    language : Optional[str]
+    language : str | None
         Language code to load, or None to use global setting
 
     Returns
@@ -160,12 +160,12 @@ def load_enums(language: Optional[str] = None) -> dict[str, dict[int, str]]:
     return load_yaml("enums.yaml", language)
 
 
-def load_units(language: Optional[str] = None) -> dict[str, dict[str, Any]]:
+def load_units(language: str | None = None) -> dict[str, dict[str, Any]]:
     """Load unit metadata from YAML file with language support.
 
     Parameters
     ----------
-    language : Optional[str]
+    language : str | None
         Language code to load, or None to use global setting
 
     Returns
@@ -177,12 +177,12 @@ def load_units(language: Optional[str] = None) -> dict[str, dict[str, Any]]:
     return load_yaml("units.yaml", language)
 
 
-def load_sensors(language: Optional[str] = None) -> dict[str, Any]:
+def load_sensors(language: str | None = None) -> dict[str, Any]:
     """Load sensor configurations from YAML file with language support.
 
     Parameters
     ----------
-    language : Optional[str]
+    language : str | None
         Language code to load, or None to use global setting
 
     Returns
