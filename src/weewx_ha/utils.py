@@ -15,6 +15,44 @@ from weewx.units import getStandardUnitType  # type: ignore
 logger = logging.getLogger(__name__)
 
 
+def degrees_to_cardinal(degrees: float) -> str:
+    """Convert wind direction in degrees to cardinal direction.
+
+    Parameters
+    ----------
+    degrees : float
+        Wind direction in degrees (0-360)
+
+    Returns
+    -------
+    str
+        Cardinal direction (e.g., "N", "NE", "SW", "NNW")
+
+    """
+    directions = [
+        "N",
+        "NNE",
+        "NE",
+        "ENE",
+        "E",
+        "ESE",
+        "SE",
+        "SSE",
+        "S",
+        "SSW",
+        "SW",
+        "WSW",
+        "W",
+        "WNW",
+        "NW",
+        "NNW",
+    ]
+    # Each direction covers 22.5 degrees (360/16)
+    # Add 11.25 to center the ranges, then divide by 22.5
+    index = int((degrees + 11.25) / 22.5) % 16
+    return directions[index]
+
+
 class UnitSystem(str, Enum):
     """Enumeration of unit systems supported by WeeWX.
 
@@ -484,6 +522,34 @@ KEY_CONFIG: dict[str, Any] = {
             "icon": "mdi:compass-rose",
             "name": "Wind Gust Direction",
             "state_class": "measurement_angle",
+        },
+    },
+    "gustdirCardinal": {
+        "source": "gustdir",
+        "convert_lambda": lambda x, cp: degrees_to_cardinal(x),
+        "metadata": {
+            "device_class": "enum",
+            "icon": "mdi:compass-rose",
+            "name": "Wind Gust Direction Cardinal",
+            "options": [
+                "N",
+                "NNE",
+                "NE",
+                "ENE",
+                "E",
+                "ESE",
+                "SE",
+                "SSE",
+                "S",
+                "SSW",
+                "SW",
+                "WSW",
+                "W",
+                "WNW",
+                "NW",
+                "NNW",
+            ],
+            "unit_of_measurement": None,
         },
     },
     "hail": {
@@ -1003,6 +1069,34 @@ KEY_CONFIG: dict[str, Any] = {
             "state_class": "measurement_angle",
         },
     },
+    "vecdirCardinal": {
+        "source": "vecdir",
+        "convert_lambda": lambda x, cp: degrees_to_cardinal(x),
+        "metadata": {
+            "device_class": "enum",
+            "icon": "mdi:compass-rose",
+            "name": "Vector Direction Cardinal",
+            "options": [
+                "N",
+                "NNE",
+                "NE",
+                "ENE",
+                "E",
+                "ESE",
+                "SE",
+                "SSE",
+                "S",
+                "SSW",
+                "SW",
+                "WSW",
+                "W",
+                "WNW",
+                "NW",
+                "NNW",
+            ],
+            "unit_of_measurement": None,
+        },
+    },
     "wind": {
         "metadata": {
             "device_class": "wind_speed",
@@ -1018,11 +1112,67 @@ KEY_CONFIG: dict[str, Any] = {
             "state_class": "measurement_angle",
         },
     },
+    "windDirCardinal": {
+        "source": "windDir",
+        "convert_lambda": lambda x, cp: degrees_to_cardinal(x),
+        "metadata": {
+            "device_class": "enum",
+            "icon": "mdi:compass-rose",
+            "name": "Wind Direction Cardinal",
+            "options": [
+                "N",
+                "NNE",
+                "NE",
+                "ENE",
+                "E",
+                "ESE",
+                "SE",
+                "SSE",
+                "S",
+                "SSW",
+                "SW",
+                "WSW",
+                "W",
+                "WNW",
+                "NW",
+                "NNW",
+            ],
+            "unit_of_measurement": None,
+        },
+    },
     "windDir10": {
         "metadata": {
             "icon": "mdi:compass-rose",
             "name": "10-Minute Wind Direction",
             "state_class": "measurement_angle",
+        },
+    },
+    "windDir10Cardinal": {
+        "source": "windDir10",
+        "convert_lambda": lambda x, cp: degrees_to_cardinal(x),
+        "metadata": {
+            "device_class": "enum",
+            "icon": "mdi:compass-rose",
+            "name": "10-Minute Wind Direction Cardinal",
+            "options": [
+                "N",
+                "NNE",
+                "NE",
+                "ENE",
+                "E",
+                "ESE",
+                "SE",
+                "SSE",
+                "S",
+                "SSW",
+                "SW",
+                "WSW",
+                "W",
+                "WNW",
+                "NW",
+                "NNW",
+            ],
+            "unit_of_measurement": None,
         },
     },
     "windGust": {
@@ -1038,6 +1188,34 @@ KEY_CONFIG: dict[str, Any] = {
             "icon": "mdi:compass-rose",
             "name": "Wind Gust Direction",
             "state_class": "measurement_angle",
+        },
+    },
+    "windGustDirCardinal": {
+        "source": "windGustDir",
+        "convert_lambda": lambda x, cp: degrees_to_cardinal(x),
+        "metadata": {
+            "device_class": "enum",
+            "icon": "mdi:compass-rose",
+            "name": "Wind Gust Direction Cardinal",
+            "options": [
+                "N",
+                "NNE",
+                "NE",
+                "ENE",
+                "E",
+                "ESE",
+                "SE",
+                "SSE",
+                "S",
+                "SSW",
+                "SW",
+                "WSW",
+                "W",
+                "WNW",
+                "NW",
+                "NNW",
+            ],
+            "unit_of_measurement": None,
         },
     },
     "windSpeed": {

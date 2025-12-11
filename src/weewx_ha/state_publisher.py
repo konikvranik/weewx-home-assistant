@@ -81,3 +81,28 @@ class StatePublisher:
                 # Apply conversion lambda if it exists
                 value = convert_lambda(value, self.config_publisher)
             self.mqtt_client.publish(f"{self.state_topic_prefix}/{key}", value)
+
+            # Publish derived sensors that use this key as source
+            self._publish_derived_sensors(key, packet[key])
+
+    def _publish_derived_sensors(self, source_key: str, source_value: float) -> None:
+        """Publish derived sensors that use the source key as their data source.
+
+        Parameters
+        ----------
+        source_key : str
+            The WeeWX key that is used as a source
+        source_value : float
+            The value from the source key
+
+        Returns
+        -------
+        None
+        """
+        # Find all sensors in seen_measurements that have this source_key
+        for sensor_name, sensor_config in self.config_publisher.seen_measurements.items():
+            if sensor_config.get("source") == source_key:
+                if convert_lambda := sensor_config.get("convert_lambda"):
+                    derived_value = convert_lambda(source_value, self.config_publisher)
+                    self.mqtt_client.publish(f"{self.state_topic_prefix}/{sensor_name}", derived_value)
+                    logger.debug(f"Published derived sensor {sensor_name} from {source_key}: {derived_value}")

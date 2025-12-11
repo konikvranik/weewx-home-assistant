@@ -118,7 +118,35 @@ class ConfigPublisher:
                 self.seen_measurements[key]["metadata"] = get_unit_metadata(
                     key, self.unit_system
                 ) | self.seen_measurements[key].get("metadata", {})
+
+                # Check if there are any derived sensors that use this key as source
+                self._discover_derived_sensors(key)
+
         return found_new_measurements
+
+    def _discover_derived_sensors(self, source_key: str) -> None:
+        """Discover and register sensors that derive from a source sensor.
+
+        Parameters
+        ----------
+        source_key : str
+            The WeeWX key that may be used as a source for derived sensors
+
+        Returns
+        -------
+        None
+        """
+        from .utils import KEY_CONFIG
+
+        # Find all sensors that have this key as their source
+        for sensor_name, sensor_config in KEY_CONFIG.items():
+            if sensor_config.get("source") == source_key and sensor_name not in self.seen_measurements:
+                logger.debug(f"Discovered derived measurement: {sensor_name} from source {source_key}")
+                self.seen_measurements[sensor_name] = get_key_config(sensor_name).copy()
+                # Derived sensors typically don't need unit metadata since they have custom conversion
+                # But if they don't have unit_of_measurement explicitly set, use None
+                if "unit_of_measurement" not in self.seen_measurements[sensor_name].get("metadata", {}):
+                    self.seen_measurements[sensor_name].setdefault("metadata", {})["unit_of_measurement"] = None
 
     def publish_discovery(self) -> None:
         """Publish discovery configurations for Home Assistant.
