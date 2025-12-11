@@ -310,12 +310,13 @@ KEY_CONFIG: dict[str, Any] = {
         },
     },
     "beaufort": {
+        "convert_lambda": lambda x, cp: str(int(x)),
         "metadata": {
             "device_class": "enum",
             "icon": "mdi:windsock",
             "name": "Beaufort Scale",
             "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-            "state_class": "measurement",
+            "unit_of_measurement": None,
         },
     },
     "cloudbase": {
