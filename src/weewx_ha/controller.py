@@ -13,7 +13,7 @@ from typing import Any
 
 # Third-Party Libraries
 import paho.mqtt.client as mqtt
-from weewx import NEW_LOOP_PACKET  # type: ignore
+from weewx import NEW_ARCHIVE_RECORD, NEW_LOOP_PACKET  # type: ignore
 from weewx.engine import StdEngine, StdService  # type: ignore
 
 from . import ConfigPublisher, PacketPreprocessor, StatePublisher
@@ -83,8 +83,9 @@ class Controller(StdService):
             self.config.unit_system,
         )
 
-        # Register the callbacks for loop packets
+        # Register the callbacks for loop packets and archive records
         self.bind(NEW_LOOP_PACKET, self.on_weewx_loop)
+        self.bind(NEW_ARCHIVE_RECORD, self.on_weewx_archive)
 
     def init_mqtt_client(self, mqtt_config: MQTTConfig):
         """Initialize the MQTT client."""
@@ -199,7 +200,8 @@ class Controller(StdService):
 
     def on_weewx_loop(self, event):
         """Handle callback for WeeWX loop packets."""
-        logger.debug("Received WeeWX loop packet")
+        packet_keys = sorted(event.packet.keys())
+        logger.debug(f"Received WeeWX loop packet with keys: {packet_keys}")
         if self.mqtt_client.is_connected():
             preprocessor_future = self.executor.submit(
                 self.packet_preprocessor.process_packet, event.packet.copy()
@@ -207,6 +209,20 @@ class Controller(StdService):
             preprocessor_future.add_done_callback(self.preprocessor_complete)
         else:
             logger.warning("MQTT client is not connected, skipping packet processing")
+
+    def on_weewx_archive(self, event):
+        """Handle callback for WeeWX archive records."""
+        record_keys = sorted(event.record.keys())
+        logger.debug(f"Received WeeWX archive record with keys: {record_keys}")
+        if self.mqtt_client.is_connected():
+            preprocessor_future = self.executor.submit(
+                self.packet_preprocessor.process_packet, event.record.copy()
+            )
+            preprocessor_future.add_done_callback(self.preprocessor_complete)
+        else:
+            logger.warning(
+                "MQTT client is not connected, skipping archive record processing"
+            )
 
     def shutDown(self):
         """Shutdown the controller.

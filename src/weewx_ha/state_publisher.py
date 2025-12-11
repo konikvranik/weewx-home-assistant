@@ -104,9 +104,22 @@ class StatePublisher:
         None
         """
         # Find all sensors in seen_measurements that have this source_key
+        derived_count = 0
         for sensor_name, sensor_config in self.config_publisher.seen_measurements.items():
             if sensor_config.get("source") == source_key:
+                derived_count += 1
                 if convert_lambda := sensor_config.get("convert_lambda"):
                     derived_value = convert_lambda(source_value, self.config_publisher)
-                    self.mqtt_client.publish(f"{self.state_topic_prefix}/{sensor_name}", derived_value)
-                    logger.debug(f"Published derived sensor {sensor_name} from {source_key}: {derived_value}")
+                    self.mqtt_client.publish(
+                        f"{self.state_topic_prefix}/{sensor_name}", derived_value
+                    )
+                    logger.debug(
+                        f"Published derived sensor {sensor_name} from {source_key}: {derived_value}"
+                    )
+                else:
+                    logger.warning(
+                        f"Derived sensor {sensor_name} has source {source_key} but no convert_lambda"
+                    )
+
+        if derived_count > 0:
+            logger.debug(f"Published {derived_count} derived sensors from {source_key}")
