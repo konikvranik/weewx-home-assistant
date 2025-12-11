@@ -143,8 +143,13 @@ def test_partial_override(reset_locale_state):
     # Verify only name was overridden
     assert sensors["outTemp"]["metadata"]["name"] == "Partial Override"
     # Verify other fields are unchanged
-    assert sensors["outTemp"]["metadata"]["device_class"] == original_outtemp["device_class"]
-    assert sensors["outTemp"]["metadata"]["state_class"] == original_outtemp["state_class"]
+    assert (
+        sensors["outTemp"]["metadata"]["device_class"]
+        == original_outtemp["device_class"]
+    )
+    assert (
+        sensors["outTemp"]["metadata"]["state_class"] == original_outtemp["state_class"]
+    )
 
 
 def test_multiple_override_types(reset_locale_state):
@@ -208,4 +213,3 @@ def test_no_overrides(reset_locale_state):
     assert "outTemp" in sensors
     assert "degree_C" in units
     assert "cardinal_directions" in enums
-
