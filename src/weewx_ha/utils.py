@@ -16,10 +16,42 @@ from .locale_loader import load_enums, load_sensors, load_units
 
 logger = logging.getLogger(__name__)
 
-# Load configuration from YAML files
-ENUM_MAPS: dict[str, dict[int, str]] = load_enums()
-UNIT_METADATA: dict[str, dict[str, Optional[str]]] = load_units()
-_SENSORS_YAML: dict[str, Any] = load_sensors()
+# Global caches for lazy-loaded configuration
+_ENUM_MAPS: dict[str, dict[int, str]] | None = None
+_UNIT_METADATA: dict[str, dict[str, Any]] | None = None
+_SENSORS_YAML: dict[str, Any] | None = None
+
+
+def _ensure_loaded() -> None:
+    """Ensure configuration is loaded (lazy loading after language is set)."""
+    global _ENUM_MAPS, _UNIT_METADATA, _SENSORS_YAML
+    if _ENUM_MAPS is None:
+        _ENUM_MAPS = load_enums()
+    if _UNIT_METADATA is None:
+        _UNIT_METADATA = load_units()
+    if _SENSORS_YAML is None:
+        _SENSORS_YAML = load_sensors()
+
+
+def get_enum_maps() -> dict[str, dict[int, str]]:
+    """Get enum maps (lazy loaded)."""
+    _ensure_loaded()
+    assert _ENUM_MAPS is not None
+    return _ENUM_MAPS
+
+
+def get_unit_metadata() -> dict[str, dict[str, Any]]:
+    """Get unit metadata (lazy loaded)."""
+    _ensure_loaded()
+    assert _UNIT_METADATA is not None
+    return _UNIT_METADATA
+
+
+def get_sensors_yaml() -> dict[str, Any]:
+    """Get sensors YAML configuration (lazy loaded)."""
+    _ensure_loaded()
+    assert _SENSORS_YAML is not None
+    return _SENSORS_YAML
 
 
 def degrees_to_cardinal(degrees: float) -> str:
@@ -39,7 +71,7 @@ def degrees_to_cardinal(degrees: float) -> str:
     # Each direction covers 22.5 degrees (360/16)
     # Add 11.25 to center the ranges, then divide by 22.5
     index = int((degrees + 11.25) / 22.5) % 16
-    return ENUM_MAPS["cardinal_directions"][index]
+    return get_enum_maps()["cardinal_directions"][index]
 
 
 class UnitSystem(str, Enum):
@@ -104,7 +136,7 @@ def get_unit_metadata(measurement_name: str, unit_system: UnitSystem) -> dict[st
                 "Guessed unit '%s' for measurement %s", target_unit, measurement_name
             )
 
-    return UNIT_METADATA.get(
+    return get_unit_metadata().get(
         target_unit,
         {"unit_of_measurement": target_unit},  # Defaults to the WeeWX unit if not found
     )
@@ -112,8 +144,10 @@ def get_unit_metadata(measurement_name: str, unit_system: UnitSystem) -> dict[st
 
 def get_key_config(weewx_key: str) -> dict[str, Any]:
     """Generate metadata for a WeeWX key."""
+    key_config_dict = get_key_config_dict()
+
     # First, attempt an exact match for the key
-    config = KEY_CONFIG.get(weewx_key)
+    config = key_config_dict.get(weewx_key)
     if config:
         return config
 
@@ -122,7 +156,7 @@ def get_key_config(weewx_key: str) -> dict[str, Any]:
     if match:
         base_key, suffix = match.groups()
         # If the base key is found in the known keys mapping, construct the friendly name
-        config = deepcopy(KEY_CONFIG.get(base_key))
+        config = deepcopy(key_config_dict.get(base_key))
         if config:
             config["metadata"]["name"] = f"{config['metadata']['name']} {suffix}"
             return config
@@ -147,13 +181,13 @@ def get_key_config(weewx_key: str) -> dict[str, Any]:
     # Guess at what the metadata should be based on the key
     guess: dict[str, Any] = {"metadata": {}}
     if "alarm" in key_split.lower():
-        guess = deepcopy(KEY_CONFIG["extraAlarm"])
+        guess = deepcopy(key_config_dict["extraAlarm"])
     elif "humidity" in key_split.lower():
-        guess = deepcopy(KEY_CONFIG["outHumidity"])
+        guess = deepcopy(key_config_dict["outHumidity"])
     elif "pressure" in key_split.lower():
-        guess = deepcopy(KEY_CONFIG["pressure"])
+        guess = deepcopy(key_config_dict["pressure"])
     elif "temperature" in key_split.lower():
-        guess = deepcopy(KEY_CONFIG["outTemp"])
+        guess = deepcopy(key_config_dict["outTemp"])
 
     guess["metadata"]["name"] = key_split
 
@@ -163,7 +197,7 @@ def get_key_config(weewx_key: str) -> dict[str, Any]:
 
 # Lambda function registry for convert_lambda references in YAML
 _LAMBDA_REGISTRY = {
-    "beaufort_scale_map": lambda x, cp: ENUM_MAPS["beaufort_scale"].get(
+    "beaufort_scale_map": lambda x, cp: get_enum_maps()["beaufort_scale"].get(
         int(x), f"{int(x)} - Unknown"
     ),
     "degrees_to_cardinal": lambda x, cp: degrees_to_cardinal(x),
@@ -186,7 +220,7 @@ def _build_key_config() -> dict[str, Any]:
         Complete KEY_CONFIG dictionary with lambda functions
 
     """
-    config = deepcopy(_SENSORS_YAML)
+    config = deepcopy(get_sensors_yaml())
 
     for sensor_name, sensor_config in config.items():
         # Replace convert_lambda string references with actual lambda functions
@@ -203,4 +237,13 @@ def _build_key_config() -> dict[str, Any]:
     return config
 
 
-KEY_CONFIG: dict[str, Any] = _build_key_config()
+# Global cache for KEY_CONFIG
+_KEY_CONFIG: dict[str, Any] | None = None
+
+
+def get_key_config_dict() -> dict[str, Any]:
+    """Get KEY_CONFIG dictionary (lazy loaded after language is set)."""
+    global _KEY_CONFIG
+    if _KEY_CONFIG is None:
+        _KEY_CONFIG = _build_key_config()
+    return _KEY_CONFIG

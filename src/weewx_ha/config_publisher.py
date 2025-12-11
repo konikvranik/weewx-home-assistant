@@ -138,13 +138,13 @@ class ConfigPublisher:
         bool
             True if new derived sensors were discovered, False otherwise
         """
-        from .utils import KEY_CONFIG
+        from .utils import get_key_config_dict
 
         found_derived = False
         logger.debug(f"Checking for derived sensors with source: {source_key}")
         # Find all sensors that have this key as their source
         # Create a snapshot of items to avoid issues if dictionary changes
-        for sensor_name, sensor_config in list(KEY_CONFIG.items()):
+        for sensor_name, sensor_config in list(get_key_config_dict().items()):
             if sensor_config.get("source") == source_key:
                 logger.debug(f"Found sensor {sensor_name} with source {source_key}")
                 if sensor_name not in self.seen_measurements:
