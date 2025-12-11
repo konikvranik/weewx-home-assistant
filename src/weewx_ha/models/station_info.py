@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class StationInfo(BaseModel):
     """Model for describing a weather station device."""
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
 
     name: str = Field(..., description="Name of the weather station.", min_length=1)
     model: str = Field(..., description="Model of the weather station.", min_length=1)
@@ -23,6 +23,7 @@ class StationInfo(BaseModel):
     time_zone: ZoneInfo = Field(
         default_factory=lambda: ZoneInfo("UTC"),
         description="Time zone of the weather station.",
+        alias="timezone",
     )
 
     @field_validator("time_zone", mode="before")

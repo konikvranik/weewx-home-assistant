@@ -143,7 +143,8 @@ class ConfigPublisher:
         found_derived = False
         logger.debug(f"Checking for derived sensors with source: {source_key}")
         # Find all sensors that have this key as their source
-        for sensor_name, sensor_config in KEY_CONFIG.items():
+        # Create a snapshot of items to avoid issues if dictionary changes
+        for sensor_name, sensor_config in list(KEY_CONFIG.items()):
             if sensor_config.get("source") == source_key:
                 logger.debug(f"Found sensor {sensor_name} with source {source_key}")
                 if sensor_name not in self.seen_measurements:
