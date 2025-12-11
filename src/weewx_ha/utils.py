@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from enum import Enum
 import logging
 import re
-from typing import Any, Optional
+from typing import Any
 
 # Third-Party Libraries
 import weewx  # type: ignore

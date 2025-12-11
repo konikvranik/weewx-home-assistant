@@ -99,7 +99,7 @@ def load_yaml(base_filename: str, language: str | None = None) -> dict[str, Any]
     base_data: dict[str, Any] = {}
 
     try:
-        with open(base_file_path, "r", encoding="utf-8") as f:
+        with open(base_file_path, encoding="utf-8") as f:
             base_data = yaml.safe_load(f) or {}
             logger.debug(f"Loaded base configuration from {base_file_path}")
     except FileNotFoundError:
@@ -121,7 +121,7 @@ def load_yaml(base_filename: str, language: str | None = None) -> dict[str, Any]
         localized_file_path = locales_dir / localized_filename
 
         try:
-            with open(localized_file_path, "r", encoding="utf-8") as f:
+            with open(localized_file_path, encoding="utf-8") as f:
                 localized_data = yaml.safe_load(f) or {}
                 logger.info(
                     f"Loaded localized configuration from {localized_file_path}, "
