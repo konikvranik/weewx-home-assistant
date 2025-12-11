@@ -314,6 +314,8 @@ KEY_CONFIG: dict[str, Any] = {
             "device_class": "enum",
             "icon": "mdi:windsock",
             "name": "Beaufort Scale",
+            "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+            "state_class": "measurement",
         },
     },
     "cloudbase": {
