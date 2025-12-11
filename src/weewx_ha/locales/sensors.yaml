@@ -486,7 +486,7 @@ pressureRate:
 radiation:
   metadata:
     device_class: "irradiance"
-    icon: "mdi:radioactive"
+    icon: "mdi:sun-wireless"
     name: "Solar Radiation"
     state_class: "measurement"
 
