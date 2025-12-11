@@ -1,0 +1,788 @@
+# Sensor configuration for WeeWX measurements
+# Defines metadata and conversion for each sensor type
+
+ET:
+  metadata:
+    enabled_by_default: false
+    icon: "mdi:waves-arrow-up"
+    name: "Evapotranspiration"
+
+THSW:
+  metadata:
+    icon: "mdi:thermometer-lines"
+    name: "Temperature Humidity Sun Wind Index"
+    state_class: "measurement"
+
+UV:
+  metadata:
+    icon: "mdi:sun-wireless"
+    name: "UV Index"
+    state_class: "measurement"
+
+altimeter:
+  metadata:
+    device_class: "atmospheric_pressure"
+    icon: "mdi:altimeter"
+    name: "Pressure Altimeter"
+    state_class: "measurement"
+
+altimeterRate:
+  metadata:
+    icon: "mdi:altimeter"
+    name: "Altimeter Rate"
+    state_class: "measurement"
+
+altitude:
+  metadata:
+    device_class: "distance"
+    icon: "mdi:altimeter"
+    name: "Altitude"
+    state_class: "measurement"
+
+appTemp:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:thermometer-lines"
+    name: "Apparent Temperature"
+    state_class: "measurement"
+
+barometer:
+  metadata:
+    device_class: "atmospheric_pressure"
+    icon: "mdi:gauge"
+    name: "Barometric Pressure"
+    state_class: "measurement"
+
+barometerRate:
+  metadata:
+    icon: "mdi:gauge"
+    name: "Barometric Pressure Rate"
+    state_class: "measurement"
+
+batteryStatusChannel:
+  integration: "binary_sensor"
+  metadata:
+    device_class: "battery"
+    enabled_by_default: false
+    icon: "mdi:battery"
+    name: "Battery Status Channel"
+    payload_off: 0
+    payload_on: 1
+
+batteryStatusISS:
+  integration: "binary_sensor"
+  metadata:
+    device_class: "battery"
+    icon: "mdi:battery"
+    name: "ISS Battery Status"
+    payload_off: 0
+    payload_on: 1
+
+beaufort:
+  convert_lambda: "beaufort_scale_map"
+  metadata:
+    device_class: "enum"
+    icon: "mdi:windsock"
+    name: "Beaufort Scale"
+    options: "@beaufort_scale"
+    unit_of_measurement: null
+
+cloudbase:
+  metadata:
+    device_class: "distance"
+    icon: "mdi:cloud-arrow-down"
+    name: "Cloud Base Height"
+    state_class: "measurement"
+
+cloudcover:
+  metadata:
+    icon: "mdi:weather-cloudy-alert"
+    name: "Cloud Cover"
+    state_class: "measurement"
+
+co:
+  metadata:
+    device_class: "carbon_monoxide"
+    icon: "mdi:molecule-co"
+    name: "Carbon Monoxide"
+    state_class: "measurement"
+
+co2:
+  metadata:
+    device_class: "carbon_dioxide"
+    icon: "mdi:molecule-co2"
+    name: "Carbon Dioxide"
+    state_class: "measurement"
+
+consBatteryVoltage:
+  metadata:
+    device_class: "voltage"
+    icon: "mdi:sine-wave"
+    name: "Console Battery Voltage"
+    state_class: "measurement"
+
+cooldeg:
+  metadata:
+    icon: "mdi:snowflake-thermometer"
+    name: "Cooling Degree Days"
+
+dateTime:
+  metadata:
+    enabled_by_default: false
+    device_class: "timestamp"
+    icon: "mdi:clock"
+    name: "Date Time"
+
+dayET:
+  metadata:
+    enabled_by_default: false
+    icon: "mdi:waves-arrow-up"
+    name: "Day Evapotranspiration"
+    state_class: "total_increasing"
+
+dayRain:
+  metadata:
+    device_class: "precipitation"
+    icon: "mdi:cup-water"
+    name: "Day Rainfall"
+    state_class: "total_increasing"
+
+daySunshineDur:
+  metadata:
+    device_class: "duration"
+    icon: "mdi:sun-clock"
+    name: "Day Sunshine Duration"
+    state_class: "total_increasing"
+
+dewpoint:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:water-thermometer"
+    name: "Dew Point Temperature"
+    state_class: "measurement"
+
+extraAlarm:
+  integration: "binary_sensor"
+  metadata:
+    enabled_by_default: false
+    icon: "mdi:alarm-light"
+    name: "Extra Alarm"
+    payload_off: 0
+    payload_on: 1
+
+extraHumid:
+  metadata:
+    device_class: "humidity"
+    icon: "mdi:water-percent"
+    name: "Extra Humidity"
+    state_class: "measurement"
+
+extraTemp:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:thermometer"
+    name: "Extra Temperature"
+    state_class: "measurement"
+
+forecastIcon:
+  metadata:
+    icon: "mdi:image-frame"
+    name: "Forecast Icon"
+
+forecastRule:
+  metadata:
+    icon: "mdi:format-list-numbered"
+    name: "Forecast Rule"
+
+growdeg:
+  metadata:
+    icon: "mdi:sprout"
+    name: "Growing Degree Days"
+
+gustdir:
+  metadata:
+    icon: "mdi:compass-rose"
+    name: "Wind Gust Direction"
+    state_class: "measurement_angle"
+
+gustdirCardinal:
+  source: "gustdir"
+  convert_lambda: "degrees_to_cardinal"
+  metadata:
+    device_class: "enum"
+    icon: "mdi:compass-rose"
+    name: "Wind Gust Direction Cardinal"
+    options: "@cardinal_directions"
+    unit_of_measurement: null
+
+hail:
+  metadata:
+    device_class: "precipitation"
+    icon: "mdi:weather-hail"
+    name: "Hailfall"
+
+hailRate:
+  metadata:
+    icon: "mdi:weather-hail"
+    name: "Hail Rate"
+    state_class: "measurement"
+
+heatdeg:
+  metadata:
+    icon: "mdi:sun-thermometer"
+    name: "Heating Degree Days"
+
+heatindex:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:sun-thermometer"
+    name: "Heat Index"
+    state_class: "measurement"
+
+heatingTemp:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:sun-thermometer"
+    name: "Heating Temperature"
+    state_class: "measurement"
+
+heatingVoltage:
+  metadata:
+    device_class: "voltage"
+    icon: "mdi:sine-wave"
+    name: "Heating Voltage"
+    state_class: "measurement"
+
+highOutTemp:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:thermometer-high"
+    name: "High Outdoor Temperature"
+    state_class: "measurement"
+
+hourRain:
+  metadata:
+    device_class: "precipitation"
+    icon: "mdi:cup-water"
+    name: "Hourly Rainfall"
+
+humidex:
+  metadata:
+    icon: "mdi:water-percent"
+    name: "Humidex"
+    state_class: "measurement"
+
+illuminance:
+  metadata:
+    device_class: "illuminance"
+    icon: "mdi:sun-wireless"
+    name: "Illuminance"
+    state_class: "measurement"
+
+insideAlarm:
+  integration: "binary_sensor"
+  metadata:
+    enabled_by_default: false
+    icon: "mdi:alarm-light"
+    name: "Inside Alarm"
+    payload_off: 0
+    payload_on: 1
+
+inDewpoint:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:water-thermometer"
+    name: "Indoor Dew Point"
+    state_class: "measurement"
+
+inHumidity:
+  metadata:
+    device_class: "humidity"
+    icon: "mdi:water-percent"
+    name: "Indoor Humidity"
+    state_class: "measurement"
+
+inTemp:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:thermometer"
+    name: "Indoor Temperature"
+    state_class: "measurement"
+
+interval:
+  metadata:
+    icon: "mdi:repeat"
+    name: "Interval"
+
+leafTemp:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:leaf-maple"
+    name: "Leaf Temperature"
+    state_class: "measurement"
+
+leafWet:
+  metadata:
+    device_class: "moisture"
+    icon: "mdi:leaf-maple"
+    name: "Leaf Wetness"
+
+lightning_distance:
+  metadata:
+    device_class: "distance"
+    icon: "mdi:flash"
+    name: "Lightning Distance"
+    state_class: "measurement"
+
+lightning_disturber_count:
+  metadata:
+    icon: "mdi:flash"
+    name: "Lightning Disturber Count"
+
+lightning_noise_count:
+  metadata:
+    icon: "mdi:flash"
+    name: "Lightning Noise Count"
+
+lightning_strike_count:
+  metadata:
+    icon: "mdi:flash"
+    name: "Lightning Strike Count"
+
+lowOutTemp:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:thermometer-low"
+    name: "Low Outdoor Temperature"
+    state_class: "measurement"
+
+maxSolarRad:
+  metadata:
+    enabled_by_default: false
+    device_class: "irradiance"
+    icon: "mdi:sun-wireless"
+    name: "Maximum Solar Radiation"
+    state_class: "measurement"
+
+monthET:
+  metadata:
+    enabled_by_default: false
+    icon: "mdi:waves-arrow-up"
+    name: "Month Evapotranspiration"
+    state_class: "total_increasing"
+
+monthRain:
+  metadata:
+    device_class: "precipitation"
+    icon: "mdi:cup-water"
+    name: "Monthly Rainfall"
+    state_class: "total_increasing"
+
+nh3:
+  metadata:
+    icon: "mdi:chemical-weapon"
+    name: "Ammonia Concentration"
+    state_class: "measurement"
+
+no2:
+  metadata:
+    device_class: "nitrogen_dioxide"
+    icon: "mdi:chemical-weapon"
+    name: "Nitrogen Dioxide Concentration"
+    state_class: "measurement"
+
+noise:
+  metadata:
+    device_class: "sound_pressure"
+    icon: "mdi:volume-vibrate"
+    name: "Noise Level"
+    state_class: "measurement"
+
+o3:
+  metadata:
+    device_class: "ozone"
+    icon: "mdi:chemical-weapon"
+    name: "Ozone Concentration"
+    state_class: "measurement"
+
+outHumidity:
+  metadata:
+    device_class: "humidity"
+    icon: "mdi:water-percent"
+    name: "Outdoor Humidity"
+    state_class: "measurement"
+
+outsideAlarm:
+  integration: "binary_sensor"
+  metadata:
+    enabled_by_default: false
+    icon: "mdi:alarm-light"
+    name: "Outside Alarm"
+    payload_off: 0
+    payload_on: 1
+
+outTemp:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:thermometer"
+    name: "Outdoor Temperature"
+    state_class: "measurement"
+
+outWetbulb:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:thermometer-water"
+    name: "Outdoor Wetbulb Temperature"
+    state_class: "measurement"
+
+pb:
+  metadata:
+    icon: "mdi:chemical-weapon"
+    name: "Lead Concentration"
+    state_class: "measurement"
+
+pm10_0:
+  metadata:
+    device_class: "pm10"
+    icon: "mdi:air-filter"
+    name: "PM10 Concentration"
+    state_class: "measurement"
+
+pm1_0:
+  metadata:
+    device_class: "pm1"
+    icon: "mdi:air-filter"
+    name: "PM1.0 Concentration"
+    state_class: "measurement"
+
+pm2_5:
+  metadata:
+    device_class: "pm25"
+    icon: "mdi:air-filter"
+    name: "PM2.5 Concentration"
+    state_class: "measurement"
+
+pop:
+  metadata:
+    icon: "mdi:cloud-percent"
+    name: "Probability of Precipitation"
+    state_class: "measurement"
+
+pressure:
+  metadata:
+    device_class: "atmospheric_pressure"
+    icon: "mdi:gauge"
+    name: "Atmospheric Pressure"
+    state_class: "measurement"
+
+pressureRate:
+  metadata:
+    icon: "mdi:gauge"
+    name: "Pressure Rate"
+    state_class: "measurement"
+
+radiation:
+  metadata:
+    device_class: "irradiance"
+    icon: "mdi:radioactive"
+    name: "Solar Radiation"
+    state_class: "measurement"
+
+rain:
+  metadata:
+    device_class: "precipitation"
+    icon: "mdi:cup-water"
+    name: "Rainfall"
+
+rain24:
+  metadata:
+    device_class: "precipitation"
+    icon: "mdi:cup-water"
+    name: "24-Hour Rainfall"
+    state_class: "measurement"
+
+rainDur:
+  metadata:
+    device_class: "duration"
+    icon: "mdi:timer"
+    name: "Rain Duration"
+
+rainRate:
+  metadata:
+    device_class: "precipitation_intensity"
+    icon: "mdi:weather-pouring"
+    name: "Rain Rate"
+    state_class: "measurement"
+
+referenceVoltage:
+  metadata:
+    device_class: "voltage"
+    icon: "mdi:sine-wave"
+    name: "Reference Voltage"
+    state_class: "measurement"
+
+rms:
+  metadata:
+    device_class: "wind_speed"
+    icon: "mdi:windsock"
+    name: "Root Mean Square Wind Speed"
+    state_class: "measurement"
+
+rxCheckPercent:
+  metadata:
+    icon: "mdi:radio-tower"
+    name: "Receive Check Percentage"
+    state_class: "measurement"
+
+soilLeafAlarm:
+  integration: "binary_sensor"
+  metadata:
+    enabled_by_default: false
+    icon: "mdi:alarm-light"
+    name: "Soil Leaf Alarm"
+    payload_off: 0
+    payload_on: 1
+
+snow:
+  metadata:
+    device_class: "precipitation"
+    icon: "mdi:weather-snowy-heavy"
+    name: "Snowfall"
+
+snowDepth:
+  metadata:
+    device_class: "distance"
+    icon: "mdi:snowflake"
+    name: "Snow Depth"
+    state_class: "measurement"
+
+snowMoisture:
+  metadata:
+    device_class: "moisture"
+    icon: "mdi:snowflake-melt"
+    name: "Snow Moisture Content"
+    state_class: "measurement"
+
+snowRate:
+  metadata:
+    device_class: "precipitation_intensity"
+    icon: "mdi:snowflake"
+    name: "Snow Rate"
+    state_class: "measurement"
+
+so2:
+  metadata:
+    device_class: "sulphur_dioxide"
+    icon: "mdi:chemical-weapon"
+    name: "Sulfur Dioxide Concentration"
+    state_class: "measurement"
+
+soilMoist:
+  metadata:
+    device_class: "moisture"
+    icon: "mdi:water-percent"
+    name: "Soil Moisture"
+    state_class: "measurement"
+
+soilTemp:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:thermometer"
+    name: "Soil Temperature"
+    state_class: "measurement"
+
+stormRain:
+  metadata:
+    device_class: "precipitation"
+    icon: "mdi:cup-water"
+    name: "Storm Rainfall"
+    state_class: "total_increasing"
+
+stormStart:
+  convert_lambda: "localtime_to_utc_timestamp"
+  metadata:
+    device_class: "timestamp"
+    icon: "mdi:clock-start"
+    name: "Storm Start Time"
+
+sunrise:
+  convert_lambda: "localtime_to_utc_timestamp"
+  metadata:
+    device_class: "timestamp"
+    icon: "mdi:weather-sunset-up"
+    name: "Sunrise"
+
+sunset:
+  convert_lambda: "localtime_to_utc_timestamp"
+  metadata:
+    device_class: "timestamp"
+    icon: "mdi:weather-sunset-down"
+    name: "Sunset"
+
+sunshineDur:
+  metadata:
+    device_class: "duration"
+    icon: "mdi:sun-clock"
+    name: "Sunshine Duration"
+
+supplyVoltage:
+  metadata:
+    device_class: "voltage"
+    icon: "mdi:sine-wave"
+    name: "Supply Voltage"
+    state_class: "measurement"
+
+totalRain:
+  metadata:
+    device_class: "precipitation"
+    icon: "mdi:cup-water"
+    name: "Total Rainfall"
+    state_class: "total_increasing"
+
+usUnits:
+  convert_lambda: "unit_system_to_string"
+  metadata:
+    attributes:
+      options: "{{ ['METRIC', 'METRICWX', 'US'] }}"
+    device_class: "enum"
+    icon: "mdi:scale-balance"
+    name: "Units"
+
+vecavg:
+  metadata:
+    device_class: "wind_speed"
+    icon: "mdi:windsock"
+    name: "Vector Average Wind Speed"
+    state_class: "measurement"
+
+vecdir:
+  metadata:
+    icon: "mdi:compass-rose"
+    name: "Vector Direction"
+    state_class: "measurement_angle"
+
+vecdirCardinal:
+  source: "vecdir"
+  convert_lambda: "degrees_to_cardinal"
+  metadata:
+    device_class: "enum"
+    icon: "mdi:compass-rose"
+    name: "Vector Direction Cardinal"
+    options: "@cardinal_directions"
+    unit_of_measurement: null
+
+wind:
+  metadata:
+    device_class: "wind_speed"
+    icon: "mdi:windsock"
+    name: "Wind Speed"
+    state_class: "measurement"
+
+windDir:
+  metadata:
+    icon: "mdi:compass-rose"
+    name: "Wind Direction"
+    state_class: "measurement_angle"
+
+windDirCardinal:
+  source: "windDir"
+  convert_lambda: "degrees_to_cardinal"
+  metadata:
+    device_class: "enum"
+    icon: "mdi:compass-rose"
+    name: "Wind Direction Cardinal"
+    options: "@cardinal_directions"
+    unit_of_measurement: null
+
+windDir10:
+  metadata:
+    icon: "mdi:compass-rose"
+    name: "10-Minute Wind Direction"
+    state_class: "measurement_angle"
+
+windDir10Cardinal:
+  source: "windDir10"
+  convert_lambda: "degrees_to_cardinal"
+  metadata:
+    device_class: "enum"
+    icon: "mdi:compass-rose"
+    name: "10-Minute Wind Direction Cardinal"
+    options: "@cardinal_directions"
+    unit_of_measurement: null
+
+windGust:
+  metadata:
+    device_class: "wind_speed"
+    icon: "mdi:windsock"
+    name: "Wind Gust Speed"
+    state_class: "measurement"
+
+windGustDir:
+  metadata:
+    icon: "mdi:compass-rose"
+    name: "Wind Gust Direction"
+    state_class: "measurement_angle"
+
+windGustDirCardinal:
+  source: "windGustDir"
+  convert_lambda: "degrees_to_cardinal"
+  metadata:
+    device_class: "enum"
+    icon: "mdi:compass-rose"
+    name: "Wind Gust Direction Cardinal"
+    options: "@cardinal_directions"
+    unit_of_measurement: null
+
+windSpeed:
+  metadata:
+    device_class: "wind_speed"
+    icon: "mdi:windsock"
+    name: "Wind Speed"
+    state_class: "measurement"
+
+windSpeed10:
+  metadata:
+    device_class: "wind_speed"
+    icon: "mdi:windsock"
+    name: "10-Minute Wind Speed"
+    state_class: "measurement"
+
+windchill:
+  metadata:
+    device_class: "temperature"
+    icon: "mdi:thermometer"
+    name: "Wind Chill Temperature"
+    state_class: "measurement"
+
+windgustvec:
+  metadata:
+    device_class: "wind_speed"
+    icon: "mdi:windsock"
+    name: "Wind Gust Vector Speed"
+
+windburn:
+  metadata:
+    device_class: "distance"
+    icon: "mdi:windsock"
+    name: "Wind Run Distance"
+
+windvec:
+  metadata:
+    device_class: "wind_speed"
+    icon: "mdi:windsock"
+    name: "Wind Vector Speed"
+
+yearET:
+  metadata:
+    enabled_by_default: false
+    icon: "mdi:waves-arrow-up"
+    name: "Year Evapotranspiration"
+    state_class: "total_increasing"
+
+yearRain:
+  metadata:
+    device_class: "precipitation"
+    icon: "mdi:cup-water"
+    name: "Yearly Rainfall"
+    state_class: "total_increasing"
+

@@ -1,0 +1,36 @@
+# Příklad českého překladu enum hodnot
+# Pro použití: přejmenuj na cs/enums.yaml a uprav locale_loader.py
+
+cardinal_directions:
+  0: "S"
+  1: "SSV"
+  2: "SV"
+  3: "VSV"
+  4: "V"
+  5: "VJV"
+  6: "JV"
+  7: "JJV"
+  8: "J"
+  9: "JJZ"
+  10: "JZ"
+  11: "ZJZ"
+  12: "Z"
+  13: "ZSZ"
+  14: "SZ"
+  15: "SSZ"
+
+beaufort_scale:
+  0: "0 - Bezvětří"
+  1: "1 - Téměř bezvětří"
+  2: "2 - Vánek"
+  3: "3 - Slabý vítr"
+  4: "4 - Mírný vítr"
+  5: "5 - Čerstvý vítr"
+  6: "6 - Silný vítr"
+  7: "7 - Prudký vítr"
+  8: "8 - Bouřlivý vítr"
+  9: "9 - Vichřice"
+  10: "10 - Silná vichřice"
+  11: "11 - Mohutná vichřice"
+  12: "12 - Orkán"
+
