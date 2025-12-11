@@ -36,21 +36,24 @@ def _ensure_loaded() -> None:
 def get_enum_maps() -> dict[str, dict[int, str]]:
     """Get enum maps (lazy loaded)."""
     _ensure_loaded()
-    assert _ENUM_MAPS is not None
+    if _ENUM_MAPS is None:
+        raise RuntimeError("Enum maps failed to load")
     return _ENUM_MAPS
 
 
 def _get_unit_metadata_dict() -> dict[str, dict[str, Any]]:
     """Get unit metadata dictionary (lazy loaded)."""
     _ensure_loaded()
-    assert _UNIT_METADATA is not None
+    if _UNIT_METADATA is None:
+        raise RuntimeError("Unit metadata failed to load")
     return _UNIT_METADATA
 
 
 def get_sensors_yaml() -> dict[str, Any]:
     """Get sensors YAML configuration (lazy loaded)."""
     _ensure_loaded()
-    assert _SENSORS_YAML is not None
+    if _SENSORS_YAML is None:
+        raise RuntimeError("Sensors YAML failed to load")
     return _SENSORS_YAML
 
 
