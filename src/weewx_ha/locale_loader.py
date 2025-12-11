@@ -84,7 +84,9 @@ def set_config_overrides(overrides: dict[str, Any] | None) -> None:
     """
     global _config_overrides
     _config_overrides = overrides
-    logger.info(f"Config overrides set: {list(overrides.keys()) if overrides else 'None'}")
+    logger.info(
+        f"Config overrides set: {list(overrides.keys()) if overrides else 'None'}"
+    )
 
 
 def get_config_overrides() -> dict[str, Any] | None:

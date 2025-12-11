@@ -17,7 +17,7 @@ from weewx import NEW_ARCHIVE_RECORD, NEW_LOOP_PACKET  # type: ignore
 from weewx.engine import StdEngine, StdService  # type: ignore
 
 from . import ConfigPublisher, PacketPreprocessor, StatePublisher
-from .locale_loader import set_language, set_config_overrides
+from .locale_loader import set_config_overrides, set_language
 from .models import ExtensionConfig, MQTTConfig
 
 logger = logging.getLogger(__name__)
