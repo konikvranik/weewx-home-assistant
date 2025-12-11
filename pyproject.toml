@@ -42,3 +42,10 @@ test = [
 
 [tool.setuptools.dynamic]
 version = { attr = "weewx_ha._version.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+weewx_ha = ["locales/*.yaml", "locales/*.md"]
+
