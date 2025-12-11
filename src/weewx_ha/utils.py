@@ -1,11 +1,11 @@
 """Utility functions and data."""
 
+import logging
+import re
 # Standard Python Libraries
 from copy import deepcopy
 from datetime import datetime, timezone
 from enum import Enum
-import logging
-import re
 from typing import Any, Optional
 
 # Third-Party Libraries
@@ -15,7 +15,6 @@ from weewx.units import getStandardUnitType  # type: ignore
 from .locale_loader import load_enums, load_sensors, load_units
 
 logger = logging.getLogger(__name__)
-
 
 # Load configuration from YAML files
 ENUM_MAPS: dict[str, dict[int, str]] = load_enums()
@@ -168,10 +167,10 @@ _LAMBDA_REGISTRY = {
         int(x), f"{int(x)} - Unknown"
     ),
     "degrees_to_cardinal": lambda x, cp: degrees_to_cardinal(x),
-    "localtime_to_utc_timestamp": lambda x, cp: datetime.fromtimestamp(x)
-    .replace(tzinfo=cp.time_zone)
-    .astimezone(tz=timezone.utc)
-    .timestamp(),
+    "localtime_to_utc_timestamp": lambda x, cp: datetime.fromtimestamp(
+        x, tz=timezone.utc).timestamp(),
+    "localtime_to_iso": lambda x, cp: datetime.fromtimestamp(
+        x, tz=timezone.utc).isoformat(),
     "unit_system_to_string": lambda x, cp: str(UnitSystem.from_int(x)),
 }
 

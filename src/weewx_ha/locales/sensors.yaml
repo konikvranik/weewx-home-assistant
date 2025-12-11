@@ -127,7 +127,7 @@ cooldeg:
     name: "Cooling Degree Days"
 
 dateTime:
-  convert_lambda: "localtime_to_utc_timestamp"
+  convert_lambda: "localtime_to_iso"
   metadata:
     enabled_by_default: false
     device_class: "timestamp"
@@ -600,21 +600,21 @@ stormRain:
     state_class: "total_increasing"
 
 stormStart:
-  convert_lambda: "localtime_to_utc_timestamp"
+  convert_lambda: "localtime_to_iso"
   metadata:
     device_class: "timestamp"
     icon: "mdi:clock-start"
     name: "Storm Start Time"
 
 sunrise:
-  convert_lambda: "localtime_to_utc_timestamp"
+  convert_lambda: "localtime_to_iso"
   metadata:
     device_class: "timestamp"
     icon: "mdi:weather-sunset-up"
     name: "Sunrise"
 
 sunset:
-  convert_lambda: "localtime_to_utc_timestamp"
+  convert_lambda: "localtime_to_iso"
   metadata:
     device_class: "timestamp"
     icon: "mdi:weather-sunset-down"
