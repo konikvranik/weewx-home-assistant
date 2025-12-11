@@ -77,13 +77,17 @@ class StatePublisher:
                     # Emit warnings for missing configurations after the system has settled
                     logger.warning(f"Could not find configuration for key: {key}")
                 continue
+
+            # Store original value for derived sensors before conversion
+            original_value = value
+
             if convert_lambda := config.get("convert_lambda"):
                 # Apply conversion lambda if it exists
                 value = convert_lambda(value, self.config_publisher)
             self.mqtt_client.publish(f"{self.state_topic_prefix}/{key}", value)
 
-            # Publish derived sensors that use this key as source
-            self._publish_derived_sensors(key, packet[key])
+            # Publish derived sensors that use this key as source (use original value)
+            self._publish_derived_sensors(key, original_value)
 
     def _publish_derived_sensors(self, source_key: str, source_value: float) -> None:
         """Publish derived sensors that use the source key as their data source.

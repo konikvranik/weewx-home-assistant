@@ -120,11 +120,12 @@ class ConfigPublisher:
                 ) | self.seen_measurements[key].get("metadata", {})
 
                 # Check if there are any derived sensors that use this key as source
-                self._discover_derived_sensors(key)
+                if self._discover_derived_sensors(key):
+                    found_new_measurements = True
 
         return found_new_measurements
 
-    def _discover_derived_sensors(self, source_key: str) -> None:
+    def _discover_derived_sensors(self, source_key: str) -> bool:
         """Discover and register sensors that derive from a source sensor.
 
         Parameters
@@ -134,10 +135,12 @@ class ConfigPublisher:
 
         Returns
         -------
-        None
+        bool
+            True if new derived sensors were discovered, False otherwise
         """
         from .utils import KEY_CONFIG
 
+        found_derived = False
         # Find all sensors that have this key as their source
         for sensor_name, sensor_config in KEY_CONFIG.items():
             if sensor_config.get("source") == source_key and sensor_name not in self.seen_measurements:
@@ -147,6 +150,9 @@ class ConfigPublisher:
                 # But if they don't have unit_of_measurement explicitly set, use None
                 if "unit_of_measurement" not in self.seen_measurements[sensor_name].get("metadata", {}):
                     self.seen_measurements[sensor_name].setdefault("metadata", {})["unit_of_measurement"] = None
+                found_derived = True
+
+        return found_derived
 
     def publish_discovery(self) -> None:
         """Publish discovery configurations for Home Assistant.
