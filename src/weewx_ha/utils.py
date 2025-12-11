@@ -1,8 +1,8 @@
 """Utility functions and data."""
 
+# Standard Python Libraries
 import logging
 import re
-# Standard Python Libraries
 from copy import deepcopy
 from datetime import datetime, timezone
 from enum import Enum

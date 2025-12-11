@@ -786,4 +786,3 @@ yearRain:
     icon: "mdi:cup-water"
     name: "Yearly Rainfall"
     state_class: "total_increasing"
-

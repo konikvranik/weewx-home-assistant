@@ -274,4 +274,3 @@ python3 -c "import yaml; \
 - **No code changes**: Add/modify sensors without touching Python
 - **Version control friendly**: YAML diffs are easy to read
 - **Validation**: YAML syntax errors caught at load time
-

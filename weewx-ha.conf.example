@@ -31,4 +31,3 @@
     # Supported values: cs, en (or omit for English default)
     # Falls back to English if translation not found
     lang = cs
-

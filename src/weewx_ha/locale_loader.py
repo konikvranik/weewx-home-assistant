@@ -1,8 +1,8 @@
 """Loader for localized configuration from YAML files."""
 
 # Standard Python Libraries
-from copy import deepcopy
 import logging
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Optional
 

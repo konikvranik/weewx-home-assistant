@@ -139,4 +139,3 @@ watt_hour:
 watt_per_meter_squared:
   unit_of_measurement: "W/m²"
   value_template: "{{ value | round(1) }}"
-

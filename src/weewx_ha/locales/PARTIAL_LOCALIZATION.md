@@ -82,4 +82,3 @@ pressure:
 - Full translation: `sensors_cs.yaml` = ~16KB (all 107 sensors)
 - Partial translation: `sensors_cs.yaml` = ~1.5KB (30 common sensors)
 - **Savings: 90% smaller file, same functionality for common use cases**
-
