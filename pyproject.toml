@@ -48,4 +48,3 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 weewx_ha = ["locales/*.yaml", "locales/*.md"]
-

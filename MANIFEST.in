@@ -1,3 +1,2 @@
 include src/weewx_ha/locales/*.yaml
 include src/weewx_ha/locales/*.md
-

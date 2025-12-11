@@ -212,4 +212,3 @@ def load_sensors(language: Optional[str] = None) -> dict[str, Any]:
         return value
 
     return {key: process_value(config) for key, config in data.items()}
-
