@@ -1,5 +1,0 @@
-# Markdownlint configuration
-# Disable atx_closed style requirement
-MD003:
-  style: "atx"
-

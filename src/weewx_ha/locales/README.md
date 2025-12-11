@@ -1,9 +1,9 @@
-# Localization System
+# Localization System #
 
 This directory contains YAML configuration files for sensor definitions, unit
 metadata, and enum mappings with multi-language support.
 
-## Structure
+## Structure ##
 
 ```text
 locales/
@@ -14,7 +14,7 @@ locales/
 └── README.md           # This file
 ```
 
-## Language Support
+## Language Support ##
 
 The system supports multiple languages through file suffixes:
 
@@ -23,7 +23,7 @@ The system supports multiple languages through file suffixes:
 - **Localized files**: `enums_cs.yaml`, `sensors_cs.yaml`, `units_cs.yaml` -
   Language-specific versions
 
-### Language Selection
+### Language Selection ###
 
 Language is configured in WeeWX configuration file:
 
@@ -60,7 +60,7 @@ inTemp:
   metadata:
     name: "Vnitřní teplota"
 
-# Other sensors not listed here will use English names from sensors.yaml
+# Other sensors not listed here will use English names from sensors.yaml #
 ```
 
 Result:
@@ -70,16 +70,16 @@ Result:
 - `ET`: "Evapotranspiration" (English fallback)
 - All sensors have complete metadata (icons, device_class, etc.)
 
-## Files
+## Files ##
 
-### enums.yaml
+### enums.yaml ###
 
 Defines enum mappings for sensors with `device_class: enum`:
 
 - `cardinal_directions`: Wind direction abbreviations (N, NE, E, etc.)
 - `beaufort_scale`: Beaufort wind scale descriptions
 
-### units.yaml
+### units.yaml ###
 
 Defines unit metadata for different measurement units:
 
@@ -87,7 +87,7 @@ Defines unit metadata for different measurement units:
 - `value_template`: Jinja2 template for rounding (e.g.,
   "{{ value | round(1) }}")
 
-### sensors.yaml
+### sensors.yaml ###
 
 Defines configuration for each sensor type:
 
@@ -103,9 +103,9 @@ Defines configuration for each sensor type:
   "windDirCardinal")
 - `integration`: Override integration type (e.g., "binary_sensor")
 
-## Special Syntax
+## Special Syntax ##
 
-### Enum References
+### Enum References ###
 
 Use `@enum_name` to reference enum values:
 
@@ -116,7 +116,7 @@ windDirCardinal:
     options: "@cardinal_directions"
 ```
 
-### Lambda Functions
+### Lambda Functions ###
 
 Reference lambda functions by name in YAML:
 
@@ -133,9 +133,9 @@ Available lambda functions:
 - `localtime_to_utc_timestamp`: Converts local time to UTC timestamp
 - `unit_system_to_string`: Converts WeeWX unit system int to string
 
-## Localization
+## Localization ##
 
-### Full Translation
+### Full Translation ###
 
 To create a complete localized version:
 
@@ -158,7 +158,7 @@ To create a complete localized version:
 
 1. Restart WeeWX to load translations
 
-### Partial Translation (Recommended)
+### Partial Translation (Recommended) ###
 
 You can translate only the sensors you need:
 
@@ -194,7 +194,7 @@ You can translate only the sensors you need:
 - ✓ Mix languages - use English terms for technical sensors
 - ✓ Gradual translation - add more over time
 
-### Example: Czech Translation
+### Example: Czech Translation ###
 
 `enums_cs.yaml`:
 
@@ -220,7 +220,7 @@ outTemp:
     # ...other metadata unchanged
 ```
 
-## Adding New Sensors
+## Adding New Sensors ##
 
 1. Add sensor definition to `sensors.yaml`:
 
@@ -235,7 +235,7 @@ outTemp:
 
 1. No Python code changes needed - sensor will be automatically loaded!
 
-## Adding New Lambda Functions
+## Adding New Lambda Functions ##
 
 1. Add function to `_LAMBDA_REGISTRY` in `utils.py`:
 
@@ -252,7 +252,7 @@ outTemp:
      convert_lambda: "new_converter"
    ```
 
-## Validation
+## Validation ##
 
 Python syntax validation:
 
@@ -267,7 +267,7 @@ python3 -c "import yaml; \
   yaml.safe_load(open('src/weewx_ha/locales/sensors.yaml'))"
 ```
 
-## Benefits
+## Benefits ##
 
 - **Easy maintenance**: Edit YAML instead of Python code
 - **Localization ready**: Simple to create translations
