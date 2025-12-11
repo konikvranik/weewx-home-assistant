@@ -106,7 +106,9 @@ class StatePublisher:
         # Find all sensors in seen_measurements that have this source_key
         # Create a snapshot of items to avoid RuntimeError if dictionary changes during iteration
         derived_count = 0
-        for sensor_name, sensor_config in list(self.config_publisher.seen_measurements.items()):
+        for sensor_name, sensor_config in list(
+            self.config_publisher.seen_measurements.items()
+        ):
             if sensor_config.get("source") == source_key:
                 derived_count += 1
                 if convert_lambda := sensor_config.get("convert_lambda"):

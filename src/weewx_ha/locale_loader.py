@@ -1,8 +1,8 @@
 """Loader for localized configuration from YAML files."""
 
 # Standard Python Libraries
-import logging
 from copy import deepcopy
+import logging
 from pathlib import Path
 from typing import Any, Optional
 
@@ -114,7 +114,7 @@ def load_yaml(base_filename: str, language: Optional[str] = None) -> dict[str, A
         return base_data
 
     # Try to load localized file
-    name_parts = base_filename.rsplit('.', 1)
+    name_parts = base_filename.rsplit(".", 1)
     if len(name_parts) == 2:
         name, ext = name_parts
         localized_filename = f"{name}_{lang}.{ext}"

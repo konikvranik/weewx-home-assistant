@@ -1,11 +1,11 @@
 """Utility functions and data."""
 
 # Standard Python Libraries
-import logging
-import re
 from copy import deepcopy
 from datetime import datetime, timezone
 from enum import Enum
+import logging
+import re
 from typing import Any, Optional
 
 # Third-Party Libraries
@@ -168,9 +168,11 @@ _LAMBDA_REGISTRY = {
     ),
     "degrees_to_cardinal": lambda x, cp: degrees_to_cardinal(x),
     "localtime_to_utc_timestamp": lambda x, cp: datetime.fromtimestamp(
-        x, tz=timezone.utc).timestamp(),
+        x, tz=timezone.utc
+    ).timestamp(),
     "localtime_to_iso": lambda x, cp: datetime.fromtimestamp(
-        x, tz=timezone.utc).isoformat(),
+        x, tz=timezone.utc
+    ).isoformat(),
     "unit_system_to_string": lambda x, cp: str(UnitSystem.from_int(x)),
 }
 

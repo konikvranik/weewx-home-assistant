@@ -1,9 +1,9 @@
 """Processes loop packets and publish MQTT discovery configurations."""
 
 # Standard Python Libraries
+from collections import defaultdict
 import json
 import logging
-from collections import defaultdict
 from typing import Any
 from zoneinfo import ZoneInfo
 
@@ -148,15 +148,25 @@ class ConfigPublisher:
             if sensor_config.get("source") == source_key:
                 logger.debug(f"Found sensor {sensor_name} with source {source_key}")
                 if sensor_name not in self.seen_measurements:
-                    logger.info(f"Discovered derived measurement: {sensor_name} from source {source_key}")
-                    self.seen_measurements[sensor_name] = get_key_config(sensor_name).copy()
+                    logger.info(
+                        f"Discovered derived measurement: {sensor_name} from source {source_key}"
+                    )
+                    self.seen_measurements[sensor_name] = get_key_config(
+                        sensor_name
+                    ).copy()
                     # Derived sensors typically don't need unit metadata since they have custom conversion
                     # But if they don't have unit_of_measurement explicitly set, use None
-                    if "unit_of_measurement" not in self.seen_measurements[sensor_name].get("metadata", {}):
-                        self.seen_measurements[sensor_name].setdefault("metadata", {})["unit_of_measurement"] = None
+                    if "unit_of_measurement" not in self.seen_measurements[
+                        sensor_name
+                    ].get("metadata", {}):
+                        self.seen_measurements[sensor_name].setdefault("metadata", {})[
+                            "unit_of_measurement"
+                        ] = None
                     found_derived = True
                 else:
-                    logger.debug(f"Derived sensor {sensor_name} already in seen_measurements")
+                    logger.debug(
+                        f"Derived sensor {sensor_name} already in seen_measurements"
+                    )
 
         return found_derived
 
