@@ -127,6 +127,7 @@ cooldeg:
     name: "Cooling Degree Days"
 
 dateTime:
+  convert_lambda: "localtime_to_utc_timestamp"
   metadata:
     enabled_by_default: false
     device_class: "timestamp"

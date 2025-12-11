@@ -1,0 +1,97 @@
+# Částečný český překlad sensorů
+# Tento soubor ukazuje, že můžete přeložit jen některé sensory.
+# Nepřeložené sensory se načtou z fallback souboru (sensors.yaml)
+
+# Přeložené sensory:
+outTemp:
+  metadata:
+    name: "Venkovní teplota"
+    # Ostatní metadata zůstávají z fallback
+
+inTemp:
+  metadata:
+    name: "Vnitřní teplota"
+
+outHumidity:
+  metadata:
+    name: "Venkovní vlhkost"
+
+inHumidity:
+  metadata:
+    name: "Vnitřní vlhkost"
+
+windSpeed:
+  metadata:
+    name: "Rychlost větru"
+
+windDir:
+  metadata:
+    name: "Směr větru"
+
+windDirCardinal:
+  metadata:
+    name: "Směr větru (světové strany)"
+
+windGust:
+  metadata:
+    name: "Poryv větru"
+
+windGustDir:
+  metadata:
+    name: "Směr poryvu větru"
+
+windGustDirCardinal:
+  metadata:
+    name: "Směr poryvu větru (světové strany)"
+
+rain:
+  metadata:
+    name: "Srážky"
+
+rainRate:
+  metadata:
+    name: "Intenzita srážek"
+
+pressure:
+  metadata:
+    name: "Atmosférický tlak"
+
+barometer:
+  metadata:
+    name: "Barometrický tlak"
+
+dewpoint:
+  metadata:
+    name: "Rosný bod"
+
+heatindex:
+  metadata:
+    name: "Tepelný index"
+
+windchill:
+  metadata:
+    name: "Pocitová teplota (chlad větru)"
+
+appTemp:
+  metadata:
+    name: "Pocitová teplota"
+
+radiation:
+  metadata:
+    name: "Sluneční záření"
+
+UV:
+  metadata:
+    name: "UV index"
+
+beaufort:
+  metadata:
+    name: "Beaufortova stupnice"
+
+cloudbase:
+  metadata:
+    name: "Výška základny mraků"
+
+# Další sensory nejsou přeloženy - použijí se z fallback souboru
+# (ET, THSW, altitude, atd.)
+

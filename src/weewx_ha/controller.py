@@ -17,6 +17,7 @@ from weewx import NEW_ARCHIVE_RECORD, NEW_LOOP_PACKET  # type: ignore
 from weewx.engine import StdEngine, StdService  # type: ignore
 
 from . import ConfigPublisher, PacketPreprocessor, StatePublisher
+from .locale_loader import set_language
 from .models import ExtensionConfig, MQTTConfig
 
 logger = logging.getLogger(__name__)
@@ -55,6 +56,9 @@ class Controller(StdService):
         logger.debug(
             f"Loaded extension configuration:\n{self.config.model_dump_json(indent=4)}"
         )
+
+        # Set language for localized YAML loading
+        set_language(self.config.lang)
 
         self.availability_topic: str = f"{self.config.state_topic_prefix}/status"
         self.mqtt_client: mqtt.Client = self.init_mqtt_client(self.config.mqtt)

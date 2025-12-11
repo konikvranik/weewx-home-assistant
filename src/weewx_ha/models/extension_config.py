@@ -2,7 +2,7 @@
 
 # Standard Python Libraries
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 # Third-Party Libraries
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
@@ -20,6 +20,10 @@ class ExtensionConfig(BaseModel):
 
     discovery_topic_prefix: str = Field(
         default="homeassistant", description="Prefix for the MQTT discovery topic"
+    )
+    lang: Optional[str] = Field(
+        default=None,
+        description="Language code for localized sensor names (e.g., 'cs', 'en'). Falls back to English if not set.",
     )
     mqtt: MQTTConfig = Field(..., description="MQTT broker configuration")
     node_id: str = Field(

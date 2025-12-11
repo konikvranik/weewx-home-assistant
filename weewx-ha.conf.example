@@ -1,0 +1,34 @@
+# Example WeeWX configuration for weewx-home-assistant extension
+
+[HomeAssistant]
+    # MQTT broker settings
+    [[mqtt]]
+        hostname = localhost
+        port = 1883
+        # username = your_username
+        # password = your_password
+        client_id = weewx_ha
+        keep_alive = 60
+
+        # Optional TLS settings
+        # [[[tls]]]
+        #     ca_certs = /path/to/ca.crt
+
+    # Station information
+    [[station]]
+        name = Weather Station
+        model = Vantage Pro2
+        manufacturer = Davis Instruments
+        time_zone = Europe/Prague  # or use 'timezone' alias
+
+    # Integration settings
+    node_id = weewx
+    discovery_topic_prefix = homeassistant
+    state_topic_prefix = weather
+    unit_system = METRICWX  # METRIC, METRICWX, or US
+
+    # Language for localized sensor names (optional)
+    # Supported values: cs, en (or omit for English default)
+    # Falls back to English if translation not found
+    lang = cs
+

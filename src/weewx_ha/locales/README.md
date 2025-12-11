@@ -1,16 +1,66 @@
 # Localization System
 
-This directory contains YAML configuration files for sensor definitions, unit metadata, and enum mappings.
+This directory contains YAML configuration files for sensor definitions, unit metadata, and enum mappings with multi-language support.
 
 ## Structure
 
 ```
 locales/
-├── enums.yaml          # Enum mappings (cardinal directions, Beaufort scale)
-├── units.yaml          # Unit metadata (units of measurement, formatting)
-├── sensors.yaml        # Sensor configurations (names, icons, device classes)
-└── cs_enums.yaml.example  # Example Czech translation
+├── enums.yaml          # Enum mappings (English/fallback)
+├── enums_cs.yaml       # Enum mappings (Czech)
+├── units.yaml          # Unit metadata (English/fallback)
+├── sensors.yaml        # Sensor configurations (English/fallback)
+└── README.md           # This file
 ```
+
+## Language Support
+
+The system supports multiple languages through file suffixes:
+
+- **Base files** (no suffix): `enums.yaml`, `sensors.yaml`, `units.yaml` - Used as fallback (English)
+- **Localized files**: `enums_cs.yaml`, `sensors_cs.yaml`, `units_cs.yaml` - Language-specific versions
+
+### Language Selection
+
+Language is configured in WeeWX configuration file:
+
+```ini
+[HomeAssistant]
+    lang = cs  # Use Czech translations
+    # lang = en  # Use English (or omit for default)
+```
+
+**Loading order:**
+1. Load base file (e.g., `sensors.yaml`) as fallback
+2. If language is set, load localized file (e.g., `sensors_cs.yaml`)
+3. Deep merge: localized values override base values
+4. Missing keys in localized file use fallback values
+
+**Partial Localization Support:**
+You don't need to translate all sensors! The system supports partial localization:
+- Translate only the sensors you want
+- Untranslated sensors automatically use English fallback
+- All metadata (icons, device_class, etc.) is preserved from base file
+
+Example `sensors_cs.yaml` (partial):
+```yaml
+outTemp:
+  metadata:
+    name: "Venkovní teplota"
+    # Other metadata inherited from sensors.yaml
+
+inTemp:
+  metadata:
+    name: "Vnitřní teplota"
+
+# Other sensors not listed here will use English names from sensors.yaml
+```
+
+Result:
+- `outTemp`: "Venkovní teplota" (Czech)
+- `inTemp`: "Vnitřní teplota" (Czech)  
+- `ET`: "Evapotranspiration" (English fallback)
+- All sensors have complete metadata (icons, device_class, etc.)
 
 ## Files
 
@@ -61,20 +111,83 @@ Available lambda functions:
 
 ## Localization
 
-To create a localized version:
+### Full Translation
 
-1. Create language subdirectory: `mkdir -p locales/cs`
-2. Copy and translate YAML files:
+To create a complete localized version:
+
+1. Copy base YAML files with language suffix:
    ```bash
-   cp enums.yaml locales/cs/enums.yaml
-   cp sensors.yaml locales/cs/sensors.yaml
+   cp enums.yaml enums_cs.yaml
+   cp sensors.yaml sensors_cs.yaml
+   cp units.yaml units_cs.yaml
    ```
-3. Translate strings in the copied files
-4. Modify `locale_loader.py` to support language selection
 
-### Example Czech Translation
+2. Translate ALL strings in the copied files
 
-See `cs_enums.yaml.example` for a sample Czech translation of enum values.
+3. Configure language in WeeWX config:
+   ```ini
+   [HomeAssistant]
+       lang = cs
+   ```
+
+4. Restart WeeWX to load translations
+
+### Partial Translation (Recommended)
+
+You can translate only the sensors you need:
+
+1. Create a partial localized file:
+   ```bash
+   # Create new file (don't copy everything)
+   touch enums_cs.yaml
+   touch sensors_cs.yaml
+   ```
+
+2. Add only the sensors you want to translate:
+   ```yaml
+   # sensors_cs.yaml
+   outTemp:
+     metadata:
+       name: "Venkovní teplota"
+   
+   inTemp:
+     metadata:
+       name: "Vnitřní teplota"
+   
+   # That's it! Other sensors will use English
+   ```
+
+3. Configure language (same as full translation)
+
+**Benefits of partial translation:**
+- ✓ Less work - translate only what you need
+- ✓ Easier maintenance - smaller files to update
+- ✓ Mix languages - use English terms for technical sensors
+- ✓ Gradual translation - add more over time
+
+### Example: Czech Localization
+
+`enums_cs.yaml`:
+```yaml
+cardinal_directions:
+  0: "S"    # Sever
+  1: "SSV"
+  2: "SV"   # Severovýchod
+  # ...
+
+beaufort_scale:
+  0: "0 - Bezvětří"
+  1: "1 - Téměř bezvětří"
+  # ...
+```
+
+`sensors_cs.yaml`:
+```yaml
+outTemp:
+  metadata:
+    name: "Venkovní teplota"
+    # ...other metadata unchanged
+```
 
 ## Adding New Sensors
 
