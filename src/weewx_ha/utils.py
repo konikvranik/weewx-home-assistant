@@ -40,8 +40,8 @@ def get_enum_maps() -> dict[str, dict[int, str]]:
     return _ENUM_MAPS
 
 
-def get_unit_metadata() -> dict[str, dict[str, Any]]:
-    """Get unit metadata (lazy loaded)."""
+def _get_unit_metadata_dict() -> dict[str, dict[str, Any]]:
+    """Get unit metadata dictionary (lazy loaded)."""
     _ensure_loaded()
     assert _UNIT_METADATA is not None
     return _UNIT_METADATA
@@ -136,7 +136,7 @@ def get_unit_metadata(measurement_name: str, unit_system: UnitSystem) -> dict[st
                 "Guessed unit '%s' for measurement %s", target_unit, measurement_name
             )
 
-    return get_unit_metadata().get(
+    return _get_unit_metadata_dict().get(
         target_unit,
         {"unit_of_measurement": target_unit},  # Defaults to the WeeWX unit if not found
     )
