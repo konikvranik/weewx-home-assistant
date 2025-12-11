@@ -223,5 +223,3 @@ INFO: Applying config overrides for units (1 entries)
 ```
 
 Check WeeWX logs to verify that your overrides are being loaded correctly.
-
-
