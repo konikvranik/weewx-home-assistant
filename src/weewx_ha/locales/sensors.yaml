@@ -7,6 +7,10 @@ ET:
     enabled_by_default: false
     icon: "mdi:waves-arrow-up"
     name: "Evapotranspiration"
+    state_class: "measurement"
+    # ET rate (mm/min) má hodnoty ~0.0001-0.006. mm unit default round(2) by vše
+    # zničilo na 0.0 → integration/statistics nedostávaly data. Plná přesnost.
+    value_template: "{{ value | float }}"
 
 THSW:
   metadata:
