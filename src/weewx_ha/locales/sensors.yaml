@@ -11,6 +11,10 @@ ET:
     # ET rate (mm/min) má hodnoty ~0.0001-0.006. mm unit default round(2) by vše
     # zničilo na 0.0 → integration/statistics nedostávaly data. Plná přesnost.
     value_template: "{{ value | float }}"
+    # Každou minutu dorazí ET rate. HA default deduplikuje stejné hodnoty
+    # → statistics sum by podreportoval (např. 5× stejná hodnota = jen 1×).
+    # force_update nutí recorder zaznamenat KAŽDOU zprávu → přesný sum.
+    force_update: true
 
 THSW:
   metadata:
